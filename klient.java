@@ -9,10 +9,18 @@ public class klient {
     private PrintWriter out;
     private BufferedReader in;
 
-    public void startConnection(String ip, int port) throws UnknownHostException, IOException {
-        clientSocket = new Socket(ip, port);
-        out = new PrintWriter(clientSocket.getOutputStream(), true);
-        in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+    public void startConnection(String ip, int port) {
+        try {
+            clientSocket = new Socket(ip, port);
+            out = new PrintWriter(clientSocket.getOutputStream(), true);
+            in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+        } catch (ConnectException e) {
+            System.out.println("Nie mozna polaczyc sie z serwerem. Serwer nie jest uruchomiony");
+            System.exit(1); 
+        } catch (IOException e) {
+            System.out.println("Wystąpił błąd podczas nawiązywania połączenia: " + e.getMessage());
+            return;
+        }
     }
 
     public String sendMessage(String msg) throws IOException {
@@ -28,38 +36,23 @@ public class klient {
 
     static int convertStringToTime(String text){
         int num = 0;
-        int factor = 1;  
-        int numberlen = 0;
-        boolean isIntiger = false;
-        boolean isSpace = false;
-        
-        if (isNegative(text)) {
-            return -1;
+        int colonIndex = text.indexOf(':');
+
+        if (colonIndex == -1) {
+            return -1; 
         }
-        for (int i = text.length() - 1; i >= 0; i--) {
-            char c = text.charAt(i);
-            if (Character.isDigit(c)) {
-                if(isSpace){
-                    return -1;
-                }
-                isIntiger = true;
-                int digitValue = c - '0';
-                num += factor * digitValue;  
-                factor *= 10;  
-                numberlen++;
-            }
-            if((c == ',' || c =='.') && isIntiger == true){
-                return -2;
-            }
-            if(c ==' ' && isIntiger == true ){
-                isSpace = true;
-            }
+        String timePart = text.substring(colonIndex + 1).trim();
+        if (timePart.isEmpty()) {
+            return -1; 
         }
-        if (numberlen < 1) {
-            return -1;
+
+        try {
+            num = Integer.parseInt(timePart);
+        } catch (NumberFormatException e) {
+            return -1; 
         }
-        return num;
-    }
+        return num; 
+        }
 
     static boolean isNegative(String text){
         char character2 =' '; 
@@ -89,12 +82,10 @@ public class klient {
                     break;
                 }
                 if (!inputLine.contains(":")){
-                    throw new errorMessage("Given wrong format of message. Example: 'Message :seconds '");
+                    client.stopConnection();
+                    throw new errorMessage("Given wrong format of message. Example: 'Message :seconds ' Breaking connections.");
                 }
-                if (inputLine.equals("") ) { 
-                    System.out.println("Given empty message. Message not sent to the server");
-                    continue;
-                } else if (inputLine.length() > 200 ) {
+                if (inputLine.length() > 200 ) {
                     System.out.println("Given message is above 200 characters. Message not sent to the server");    
                     continue;
                 } 
