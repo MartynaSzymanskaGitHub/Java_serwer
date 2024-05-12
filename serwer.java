@@ -5,6 +5,7 @@ public class serwer {
 private ServerSocket serverSocket;
 public int port = 6666;
 public int counterClients = 0;
+
  void start() throws IOException{
     serverSocket = new ServerSocket(port);
    
@@ -16,10 +17,6 @@ public int counterClients = 0;
            
         }
 }
-
-public void stop() throws IOException {
-            serverSocket.close();
-        }
 
  public static void main(String[] args) throws IOException {
         serwer server = new serwer();
