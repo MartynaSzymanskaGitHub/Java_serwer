@@ -12,7 +12,7 @@ public int counterClients = 0;
     System.out.println("Welcome to my server");
         while (true){
              Socket clientSocket = serverSocket.accept(); 
-            new Thread(new klientHandler(clientSocket,this)).start();
+            new Thread(new klientHandler(clientSocket)).start();
             System.out.println("Client connected");
            
         }
