@@ -26,7 +26,7 @@ public class klientHandler extends Thread {
         }
         return num;
     }
-    String changeString(String inputLine){
+    String stringToSender(String inputLine){
         String divide = ":";
         int firstIndexOfDivide = inputLine.indexOf(divide);
         return inputLine.substring(0, firstIndexOfDivide);
@@ -48,7 +48,7 @@ public class klientHandler extends Thread {
                         clientSocket.close();
                         break;
                     }
-                    String newInput = changeString(inputLine);
+                    String newInput = stringToSender(inputLine);
                     System.out.println("Message from client: " + newInput);
                     int time = convertStringToTime(inputLine);
                     ScheduledExecutorService executorService = Executors.newScheduledThreadPool(1);
