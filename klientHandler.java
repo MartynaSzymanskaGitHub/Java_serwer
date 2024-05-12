@@ -9,7 +9,7 @@ public class klientHandler extends Thread {
     private PrintWriter out;
     private BufferedReader in;
 
-    public klientHandler(Socket socket, serwer Serwer) {
+    public klientHandler(Socket socket) {
         this.clientSocket = socket;
     }
 
