@@ -54,20 +54,6 @@ public class klient {
         return num; 
         }
 
-    static boolean isNegative(String text){
-        char character2 =' '; 
-        for (int i = text.length() - 1; i >= 0; i--) {
-            char character = text.charAt(i);
-            if (i> 0) {
-                character2 = text.charAt(i-1);
-            }
-            if (Character.isDigit(character) && character2 == '-') {
-                return true; 
-            }
-        }
-        return false;
-    }
-
     public static void main(String[] args) throws IOException {
         klient client = new klient();
         client.startConnection("127.0.0.1", 6666);
