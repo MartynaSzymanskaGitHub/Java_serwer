@@ -69,7 +69,7 @@ public class klient {
                 }
                 if (!inputLine.contains(":")){
                     client.stopConnection();
-                    throw new errorMessage("Given wrong format of message. Example: 'Message :seconds ' Breaking connections.");
+                    throw new errorMessage("Given wrong format of message. Example: 'Message : seconds ' Breaking connections.");
                 }
                 if (inputLine.length() > 200 ) {
                     System.out.println("Given message is above 200 characters. Message not sent to the server");    
